@@ -1,0 +1,13 @@
+body {
+  background-color: black;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  margin-top: 250px;
+}
+
+img {
+  padding: 20px;
+}
