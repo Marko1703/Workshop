@@ -4,6 +4,7 @@ const personEl = document.querySelector(".person");
 const logoEl = document.querySelector(".logo");
 const shipEl = document.querySelector(".ship");
 const personImgEl = document.querySelector(".personImg");
+const shipImgEl = document.querySelector(".shipImg");
 
 const People_URL = "https://swapi.dev/api/people/?page=1";
 
@@ -53,8 +54,8 @@ function renderPeopleTable(containerEl, peopleInfo) {
     </thead>
     <tbody>${tableHTML}</tbody>
  </table>
- <button class="characterNextPage">Previous Page</button>
- <button class="characterPrevPage">Next Page</button>`;
+ <button class="characterNextPage">Next Page</button>
+ <button class="characterPrevPage">Previous Page</button>`;
 
  const characterNextBtn = document.querySelector(".characterNextPage");
  const characterPrevBtn = document.querySelector(".characterPrevPage");
@@ -63,7 +64,7 @@ function renderPeopleTable(containerEl, peopleInfo) {
   characterNextBtn.disabled = true
  }
 
- if (!peopleInfo.next) {
+ if (!peopleInfo.previous) {
   characterPrevBtn.disabled = true
  }
 
@@ -88,7 +89,67 @@ function fetchShips() {
     })
     .then(function (data) {
       console.log(data);
+
+      renderShipsTable(shipEl, data)
     });
+}
+
+shipImgEl.addEventListener("click", function() {
+  fetchShips(Ships_URL)
+})
+
+function renderShipsTable(containerEl, shipsInfo) {
+  let tableHTML = ""
+
+  for (let ship of shipsInfo.results) {
+    tableHTML += `
+    <tr>
+      <td>${ship.name}</td>
+      <td>${ship.model}</td>
+      <td>${ship.manufacturer}</td>
+      <td>${ship.cost}</td>
+      <td>${ship.people_capacity}</td>
+      <td>${ship.class}</td>
+    </tr>
+        `;
+  }
+
+  containerEl.innerHTML +=
+`<table class = "mainTable">
+    <thead>
+     <tr>
+         <th>Name</th>
+         <th>Model</th>
+         <th>Manufacturer</th>
+         <th>Cost</th>
+         <th>People Capacity</th>
+         <th>Class</th>
+     </tr>
+    </thead>
+    <tbody>${tableHTML}</tbody>
+ </table>
+ <button class="shipsNextPage">Next Page</button>
+ <button class="shipsPrevPage">Previous Page</button>`;
+
+ const shipsNextBtn = document.querySelector(".shipsNextPage");
+ const shipsPrevBtn = document.querySelector(".shipsPrevPage");
+
+ if (!shipsInfo.next) {
+  shipsNextBtn.disabled = true
+ }
+
+ if (!shipsInfo.previous) {
+  shipsPrevBtn.disabled = true
+ }
+
+ shipsNextBtn.addEventListener("click", function (){
+  fetchShips(shipsInfo.next)
+})
+
+shipsPrevBtn.addEventListener("click", function (){
+fetchShips(shipsInfo.previous)
+})
+
 }
 
 fetchShips();

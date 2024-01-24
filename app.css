@@ -39,3 +39,18 @@ img {
   background-color: #999;
   cursor: not-allowed;
 }
+
+.shipsNextPage,
+.shipsPrevPage {
+  background-color: #777;
+  color: black;
+  padding: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.shipsNextPage,
+.shipsPrevPage {
+  background-color: #999;
+  cursor: not-allowed;
+}
