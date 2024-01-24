@@ -16,6 +16,19 @@ function fetchPeople() {
     });
 }
 
+function renderPeopleTable(containerEl, peopleInfo) {
+  let peopleInfoHTML = `
+  <tr>
+    <td>${people.name}</td>
+    <td>${people.height}</td>
+    <td>${people.mass}</td>
+    <td>${people.gender}</td>
+    <td>${people.birth_year}</td>
+    <td>${people.films.length}</td>
+  </tr>
+  `;
+}
+
 fetchPeople();
 
 const Ships_URL = "https://swapi.dev/api/starships/?page=1";
@@ -31,5 +44,3 @@ function fetchShips() {
 }
 
 fetchShips();
-
-const personImg = document.querySelector(".personImg");
