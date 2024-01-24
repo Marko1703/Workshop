@@ -1,5 +1,6 @@
 body {
   background-color: black;
+  color: white;
 }
 
 main {
@@ -10,4 +11,37 @@ main {
 
 img {
   padding: 20px;
+}
+
+.mainTable th {
+  background-color: #333;
+  /* Dark gray background for table header */
+}
+
+.mainTable tbody tr:nth-child(odd) {
+  background-color: #555;
+  /* Darker gray background for odd rows */
+}
+
+.mainTable tbody tr:nth-child(even) {
+  background-color: #444;
+  /* Slightly lighter gray background for even rows */
+}
+
+.characterNextPage,
+.characterPrevPage {
+  background-color: #777;
+  /* Light gray background for buttons */
+  color: black;
+  /* Button text color */
+  padding: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.characterNextPage:disabled,
+.characterPrevPage:disabled {
+  background-color: #999;
+  /* Darker gray for disabled buttons */
+  cursor: not-allowed;
 }
