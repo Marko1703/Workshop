@@ -16,16 +16,16 @@ function fetchPeople() {
     .then(function (data) {
       console.log(data);
 
-      renderPeopleTable(personEl, data)
+      renderPeopleTable(personEl, data);
     });
 }
 
-personImgEl.addEventListener("click", function() {
-  fetchPeople(People_URL)
-})
+personImgEl.addEventListener("click", function () {
+  fetchPeople(People_URL);
+});
 
 function renderPeopleTable(containerEl, peopleInfo) {
-  let tableHTML = ""
+  let tableHTML = "";
 
   for (let people of peopleInfo.results) {
     tableHTML += `
@@ -40,8 +40,7 @@ function renderPeopleTable(containerEl, peopleInfo) {
         `;
   }
 
-  containerEl.innerHTML +=
-`<table class = "mainTable">
+  containerEl.innerHTML = `<table class = "mainTable">
     <thead>
      <tr>
          <th>Name</th>
@@ -54,31 +53,29 @@ function renderPeopleTable(containerEl, peopleInfo) {
     </thead>
     <tbody>${tableHTML}</tbody>
  </table>
+ <button class="characterPrevPage">Previous Page</button>
  <button class="characterNextPage">Next Page</button>
- <button class="characterPrevPage">Previous Page</button>`;
+ `;
 
- const characterNextBtn = document.querySelector(".characterNextPage");
- const characterPrevBtn = document.querySelector(".characterPrevPage");
+  const characterNextBtn = document.querySelector(".characterNextPage");
+  const characterPrevBtn = document.querySelector(".characterPrevPage");
 
- if (!peopleInfo.next) {
-  characterNextBtn.disabled = true
- }
+  if (!peopleInfo.next) {
+    characterNextBtn.disabled = true;
+  }
 
- if (!peopleInfo.previous) {
-  characterPrevBtn.disabled = true
- }
+  if (!peopleInfo.previous) {
+    characterPrevBtn.disabled = true;
+  }
 
- characterNextBtn.addEventListener("click", function (){
-  fetchPeople(peopleInfo.next)
-})
+  characterNextBtn.addEventListener("click", function () {
+    fetchPeople(peopleInfo.next);
+  });
 
-characterPrevBtn.addEventListener("click", function (){
-fetchPeople(peopleInfo.previous)
-})
-
+  characterPrevBtn.addEventListener("click", function () {
+    fetchPeople(peopleInfo.previous);
+  });
 }
-
-fetchPeople();
 
 const Ships_URL = "https://swapi.dev/api/starships/?page=1";
 
@@ -90,16 +87,16 @@ function fetchShips() {
     .then(function (data) {
       console.log(data);
 
-      renderShipsTable(shipEl, data)
+      renderShipsTable(shipEl, data);
     });
 }
 
-shipImgEl.addEventListener("click", function() {
-  fetchShips(Ships_URL)
-})
+shipImgEl.addEventListener("click", function () {
+  fetchShips(Ships_URL);
+});
 
 function renderShipsTable(containerEl, shipsInfo) {
-  let tableHTML = ""
+  let tableHTML = "";
 
   for (let ship of shipsInfo.results) {
     tableHTML += `
@@ -114,8 +111,7 @@ function renderShipsTable(containerEl, shipsInfo) {
         `;
   }
 
-  containerEl.innerHTML +=
-`<table class = "mainTable">
+  containerEl.innerHTML = `<table class = "mainTable">
     <thead>
      <tr>
          <th>Name</th>
@@ -128,28 +124,26 @@ function renderShipsTable(containerEl, shipsInfo) {
     </thead>
     <tbody>${tableHTML}</tbody>
  </table>
+ <button class="shipsPrevPage">Previous Page</button>
  <button class="shipsNextPage">Next Page</button>
- <button class="shipsPrevPage">Previous Page</button>`;
+ `;
 
- const shipsNextBtn = document.querySelector(".shipsNextPage");
- const shipsPrevBtn = document.querySelector(".shipsPrevPage");
+  const shipsNextBtn = document.querySelector(".shipsNextPage");
+  const shipsPrevBtn = document.querySelector(".shipsPrevPage");
 
- if (!shipsInfo.next) {
-  shipsNextBtn.disabled = true
- }
+  if (!shipsInfo.previous) {
+    shipsPrevBtn.disabled = true;
+  }
 
- if (!shipsInfo.previous) {
-  shipsPrevBtn.disabled = true
- }
+  if (!shipsInfo.next) {
+    shipsNextBtn.disabled = true;
+  }
 
- shipsNextBtn.addEventListener("click", function (){
-  fetchShips(shipsInfo.next)
-})
+  shipsPrevBtn.addEventListener("click", function () {
+    fetchShips(shipsInfo.previous);
+  });
 
-shipsPrevBtn.addEventListener("click", function (){
-fetchShips(shipsInfo.previous)
-})
-
+  shipsNextBtn.addEventListener("click", function () {
+    fetchShips(shipsInfo.next);
+  });
 }
-
-fetchShips();
