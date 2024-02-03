@@ -1,56 +1,60 @@
 body {
   background-color: black;
-  color: white;
+  font-family: sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
-main {
+header {
+  background-color: #1a19198e;
+}
+
+.logo {
+  margin-left: 50px;
+}
+
+.landing {
   display: flex;
-  justify-content: center;
-  margin-top: 200px;
+  justify-content: space-around;
+  margin: 50px;
+  gap: 20px;
 }
 
-img {
-  padding: 20px;
+.container {
+  display: grid;
+  place-items: center;
 }
 
-.mainTable th {
+.peopleImg,
+.shipsImg {
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 20px;
   background-color: #333;
 }
 
-.mainTable tbody tr:nth-child(odd) {
+th {
+  text-align: left;
   background-color: #555;
+  color: white;
 }
 
-.mainTable tbody tr:nth-child(even) {
-  background-color: #444;
+th,
+td {
+  border: 1px solid snow;
+  min-width: 150px;
+  padding: 5px;
+  color: white;
 }
 
-.characterNextPage,
-.characterPrevPage {
-  background-color: #777;
-  color: black;
-  padding: 8px;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.characterNextPage:disabled,
-.characterPrevPage:disabled {
-  background-color: #999;
-  cursor: not-allowed;
-}
-
-.shipsNextPage,
-.shipsPrevPage {
-  background-color: #777;
-  color: black;
-  padding: 8px;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.shipsNextPage,
-.shipsPrevPage {
-  background-color: #999;
-  cursor: not-allowed;
+button {
+  font-size: 20px;
+  padding: 5px;
+  margin: 10px;
+  min-width: 200px;
+  background-color: #555;
+  color: white;
 }

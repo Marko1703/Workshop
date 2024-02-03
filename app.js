@@ -1,155 +1,108 @@
-console.log("Script is working!");
+const tableContainerEl = document.querySelector(".table-container");
+const buttonsContainerEl = document.querySelector(".buttons-container");
 
-const personEl = document.querySelector(".person");
-const logoEl = document.querySelector(".logo");
-const shipEl = document.querySelector(".ship");
-const personImgEl = document.querySelector(".personImg");
-const shipImgEl = document.querySelector(".shipImg");
+const peopleImgEl = document.querySelector(".people-image");
+const shipsImgEl = document.querySelector(".ships-image");
+const errorEl = document.querySelector(".error");
 
-const People_URL = "https://swapi.dev/api/people/?page=1";
+const PEOPLE_URL = "https://swapi.dev/api/people/?page=1";
+const SHIPS_URL = "https://swapi.dev/api/starships/?page=1";
 
-function fetchPeople() {
-  fetch(People_URL)
-    .then(function (res) {
-      return res.json();
-    })
-    .then(function (data) {
-      console.log(data);
+const displayError = error => {
+  errorEl.innerText = error;
+  tableContainerEl.innerHTML = "";
+  buttonsContainerEl.innerHTML = "";
+};
 
-      renderPeopleTable(personEl, data)
+const toggleError = isShown => {
+  if (isShown) {
+    // This removes a css class from an element
+    errorEl.classList.remove("hide");
+  } else {
+    errorEl.classList.add("hide");
+  }
+};
+
+const renderNextPrevBtns = (element, data, callback) => {
+  element.innerHTML = "";
+
+  if (data.previous) {
+    const previousBtn = document.createElement("BUTTON");
+    previousBtn.innerText = "Previous";
+    element.appendChild(previousBtn);
+    previousBtn.addEventListener("click", () => {
+      callback(data.previous);
     });
-}
-
-personImgEl.addEventListener("click", function() {
-  fetchPeople(People_URL)
-})
-
-function renderPeopleTable(containerEl, peopleInfo) {
-  let tableHTML = ""
-
-  for (let people of peopleInfo.results) {
-    tableHTML += `
-    <tr>
-      <td>${people.name}</td>
-      <td>${people.height}</td>
-      <td>${people.mass}</td>
-      <td>${people.gender}</td>
-      <td>${people.birth_year}</td>
-      <td>${people.films.length}</td>
-    </tr>
-        `;
   }
 
-  containerEl.innerHTML +=
-`<table class = "mainTable">
-    <thead>
-     <tr>
-         <th>Name</th>
-         <th>Height</th>
-         <th>Mass</th>
-         <th>Gender</th>
-         <th>Birth Year</th>
-         <th>Appearances</th>
-     </tr>
-    </thead>
-    <tbody>${tableHTML}</tbody>
- </table>
- <button class="characterNextPage">Next Page</button>
- <button class="characterPrevPage">Previous Page</button>`;
-
- const characterNextBtn = document.querySelector(".characterNextPage");
- const characterPrevBtn = document.querySelector(".characterPrevPage");
-
- if (!peopleInfo.next) {
-  characterNextBtn.disabled = true
- }
-
- if (!peopleInfo.previous) {
-  characterPrevBtn.disabled = true
- }
-
- characterNextBtn.addEventListener("click", function (){
-  fetchPeople(peopleInfo.next)
-})
-
-characterPrevBtn.addEventListener("click", function (){
-fetchPeople(peopleInfo.previous)
-})
-
-}
-
-fetchPeople();
-
-const Ships_URL = "https://swapi.dev/api/starships/?page=1";
-
-function fetchShips() {
-  fetch(Ships_URL)
-    .then(function (res) {
-      return res.json();
-    })
-    .then(function (data) {
-      console.log(data);
-
-      renderShipsTable(shipEl, data)
+  if (data.next) {
+    const nextBtn = document.createElement("BUTTON");
+    nextBtn.innerHTML = "Next";
+    element.appendChild(nextBtn);
+    nextBtn.addEventListener("click", () => {
+      callback(data.next);
     });
-}
-
-shipImgEl.addEventListener("click", function() {
-  fetchShips(Ships_URL)
-})
-
-function renderShipsTable(containerEl, shipsInfo) {
-  let tableHTML = ""
-
-  for (let ship of shipsInfo.results) {
-    tableHTML += `
-    <tr>
-      <td>${ship.name}</td>
-      <td>${ship.model}</td>
-      <td>${ship.manufacturer}</td>
-      <td>${ship.cost}</td>
-      <td>${ship.people_capacity}</td>
-      <td>${ship.class}</td>
-    </tr>
-        `;
   }
+};
 
-  containerEl.innerHTML +=
-`<table class = "mainTable">
-    <thead>
-     <tr>
-         <th>Name</th>
-         <th>Model</th>
-         <th>Manufacturer</th>
-         <th>Cost</th>
-         <th>People Capacity</th>
-         <th>Class</th>
-     </tr>
-    </thead>
-    <tbody>${tableHTML}</tbody>
- </table>
- <button class="shipsNextPage">Next Page</button>
- <button class="shipsPrevPage">Previous Page</button>`;
+const fetchPeople = async url => {
 
- const shipsNextBtn = document.querySelector(".shipsNextPage");
- const shipsPrevBtn = document.querySelector(".shipsPrevPage");
+  try {
+    const res = await fetch(url);
+    const peopleData = await res.json();
+    console.log(peopleData);
 
- if (!shipsInfo.next) {
-  shipsNextBtn.disabled = true
- }
+    renderPeoplePage(tableContainerEl, peopleData);
+    renderNextPrevBtns(buttonsContainerEl, peopleData, fetchPeople);
+    toggleError(false);
+  } catch (error) {
+    displayError(error);
+    toggleError(true);
+  }
+};
 
- if (!shipsInfo.previous) {
-  shipsPrevBtn.disabled = true
- }
+const generatePeopleTableHTML = peopleList => {
+  const tableBodyHTML = peopleList.reduce((acc, people) => {
+    const tableRowHTML = `
+       <tr>
+         <td>${people.name}</td>
+         <td>${people.height}</td>
+         <td>${people.mass}</td>
+         <td>${people.gender}</td>
+         <td>${people.birth_year}</td>
+         <td>${people.films.length}</td>
+       </tr>
+       `;
 
- shipsNextBtn.addEventListener("click", function (){
-  fetchShips(shipsInfo.next)
-})
+    return acc + tableRowHTML;
+  }, "");
 
-shipsPrevBtn.addEventListener("click", function (){
-fetchShips(shipsInfo.previous)
-})
+  const tableHTML = `
+    <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Model</th>
+            <th>Manufacturer</th>
+            <th>Cost (credits)</th>
+            <th>People Capacity (passengers)</th>
+            <th>Class</th>
+          </tr>
+        </thead>
+        <tbody>
+        ${tableBodyHTML}
+        </tbody>
+    </table
+  `;
 
-}
+  return tableHTML;
+};
 
-fetchShips();
+const renderPeoplePage = (element, peopleData) => {
+  element.innerHTML = generatePeopleTableHTML(peopleData.results);
+};
+
+peopleImgEl.addEventListener("click", () => {
+  console.log("people image clicked");
+  fetchPeople(PEOPLE_URL);
+});
